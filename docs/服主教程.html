@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>倍率调整器 服主教程</title>
+<style>
+/* ============================================================
+   样式区：禁止修改！
+   本模板是 xiangmujiaocheng 技能的「服主教程」专属模板（清爽文档蓝）。
+   修改此区会破坏所有项目服主教程的视觉统一。
+   ============================================================ */
+:root{--acc:#2563eb;--accbg:#eff6ff;--line:#e2e8f0;--line2:#cbd5e1;--text:#1e293b;--dim:#64748b;--bg2:#f8fafc;--ok:#16a34a;--warn:#d97706;--warnbg:#fffbeb;--warnline:#fde68a}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font:15.5px/1.85 "Microsoft YaHei","PingFang SC","Segoe UI",sans-serif;color:var(--text);background:#fff}
+a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
+code{background:var(--accbg);color:#1d4ed8;border-radius:4px;padding:1px 7px;font-family:Consolas,"Courier New",monospace;font-size:13.5px}
+pre{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:13px 16px;overflow:auto}
+pre code{background:none;color:#0f172a;padding:0}
+.hide{display:none!important}
+
+.hero{background:linear-gradient(180deg,#eef5ff 0%,#ffffff 100%);border-bottom:1px solid var(--line);padding:36px 20px 26px}
+.hero-in{max-width:1180px;margin:0 auto}
+.kind{display:inline-block;background:var(--acc);color:#fff;border-radius:4px;font-size:13px;padding:2px 12px;letter-spacing:2px}
+.hero h1{margin:12px 0 6px;font-size:30px}
+.hero h1 .accent{color:var(--acc)}
+.hero .sub{color:var(--dim);margin:0;font-size:15px}
+
+.toolbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 1px 3px rgba(15,23,42,.05)}
+.toolbar-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:10px 20px}
+#searchInput{flex:1 1 240px;border:1px solid var(--line2);border-radius:8px;padding:8px 14px;font-size:14.5px;outline:none;background:var(--bg2)}
+#searchInput:focus{border-color:var(--acc);background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1px solid var(--line2);background:#fff;color:var(--dim);border-radius:999px;padding:5px 15px;font-size:13.5px;cursor:pointer}
+.chip:hover{border-color:var(--acc);color:var(--acc)}
+.chip.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.count{color:var(--dim);font-size:13px;white-space:nowrap}
+
+.layout{max-width:1180px;margin:0 auto;padding:26px 20px 70px;display:flex;gap:36px;align-items:flex-start}
+.toc{flex:0 0 215px;position:sticky;top:66px}
+.toc-title{font-size:12.5px;color:var(--dim);letter-spacing:3px;margin-bottom:8px;padding-left:10px}
+.toc a{display:block;color:var(--dim);padding:6px 10px;border-left:2px solid var(--line);font-size:14px}
+.toc a:hover{color:var(--acc);border-left-color:var(--acc);background:var(--accbg);text-decoration:none}
+.toc a.dim{opacity:.35}
+.content{flex:1 1 500px;min-width:320px}
+
+.unit{margin:0 0 38px}
+.group{font-size:12.5px;color:var(--acc);letter-spacing:2px;margin-bottom:4px}
+.unit>h2{margin:0 0 10px;font-size:22px;border-left:4px solid var(--acc);padding-left:12px}
+.lead{color:var(--dim);margin:0 0 14px;font-size:14.5px}
+.unit h3{font-size:16.5px;margin:20px 0 8px}
+
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:13px;margin:16px 0}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:15px 17px;box-shadow:0 1px 2px rgba(15,23,42,.04);transition:.15s}
+.card:hover{border-color:var(--acc);box-shadow:0 4px 14px rgba(37,99,235,.12)}
+.card .icon{font-size:22px}
+.card h4{margin:7px 0 5px;font-size:15.5px;color:var(--acc)}
+.card p{margin:0;color:var(--dim);font-size:13.5px}
+
+ol.steps{list-style:none;counter-reset:st;padding:0;margin:8px 0 0}
+ol.steps>li{counter-increment:st;position:relative;padding:0 0 20px 48px}
+ol.steps>li::before{content:counter(st);position:absolute;left:0;top:2px;width:30px;height:30px;border-radius:50%;background:var(--acc);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:14px}
+ol.steps>li::after{content:"";position:absolute;left:14px;top:36px;bottom:4px;width:2px;background:var(--line)}
+ol.steps>li:last-child{padding-bottom:2px}
+ol.steps>li:last-child::after{display:none}
+.step-title{display:block;font-weight:700;margin-bottom:3px}
+ol.steps p{margin:0}
+
+.note,.warning{border-radius:8px;padding:12px 16px;margin:14px 0;font-size:14.5px}
+.note{background:var(--accbg);border:1px solid #bfdbfe}
+.warning{background:var(--warnbg);border:1px solid var(--warnline)}
+
+table.data-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14.5px}
+.data-table th{background:var(--accbg);color:#1d4ed8;text-align:left}
+.data-table th,.data-table td{border:1px solid var(--line);padding:8px 13px}
+.data-table tr:nth-child(even) td{background:#fbfdff}
+.data-table td code{white-space:nowrap}
+
+details.faq{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:10px 16px;margin:9px 0}
+details.faq summary{cursor:pointer;font-weight:600}
+details.faq[open]{border-color:var(--acc)}
+details.faq .answer{color:var(--dim);padding-top:7px}
+
+.shot{border:2px dashed var(--line2);border-radius:8px;padding:26px;text-align:center;color:var(--dim);font-size:14px;margin:13px 0}
+.badge{display:inline-block;border-radius:4px;padding:1px 10px;font-size:12.5px;margin-right:6px;color:var(--acc);border:1px solid var(--acc)}
+.badge.ok{color:var(--ok);border-color:var(--ok)}
+.badge.warn{color:var(--warn);border-color:var(--warn)}
+.empty{border:1px dashed var(--line2);border-radius:10px;padding:44px;text-align:center;color:var(--dim);margin:20px 0}
+
+.foot{border-top:1px solid var(--line);color:var(--dim);text-align:center;padding:20px;font-size:13px;background:var(--bg2)}
+@media (max-width:820px){.toc{display:none}.layout{padding-top:18px}.hero h1{font-size:24px}}
+</style>
+</head>
+<body>
+
+<header class="hero"><div class="hero-in">
+  <span class="kind">服主教程</span>
+  <h1>倍率调整器 <span class="accent">配置与部署指南</span></h1>
+  <p class="sub">面向服主：安装部署、全部配置项详解、命令用法与疑难排查</p>
+</div></header>
+
+<div class="toolbar"><div class="toolbar-in">
+  <input id="searchInput" type="search" placeholder="搜索配置项、命令、问题…">
+  <div class="chips">
+    <button class="chip on" data-cat="all">全部</button>
+    <button class="chip" data-cat="deploy">部署</button>
+    <button class="chip" data-cat="basic">基础配置</button>
+    <button class="chip" data-cat="schedule">排程配置</button>
+    <button class="chip" data-cat="notify">通知配置</button>
+    <button class="chip" data-cat="cmd">命令详解</button>
+    <button class="chip" data-cat="faq">疑难解答</button>
+  </div>
+  <span class="count" id="resultCount"></span>
+</div></div>
+
+<div class="layout">
+<nav class="toc">
+  <div class="toc-title">目录</div>
+  <a href="#u1">软件总览</a>
+  <a href="#u2">环境要求</a>
+  <a href="#u3">部署安装</a>
+  <a href="#u4">配置文件说明</a>
+  <a href="#u5">配置总表</a>
+  <a href="#u6">排程结构与匹配规则</a>
+  <a href="#u7">排程条目：启用与时间</a>
+  <a href="#u8">倍率项配置（16 项）</a>
+  <a href="#u9">通知段配置</a>
+  <a href="#u10">命令段配置（命令改名）</a>
+  <a href="#u11">通用段与控制台编码</a>
+  <a href="#u12">命令总表与改名</a>
+  <a href="#u13">/今日倍率（玩家）</a>
+  <a href="#u14">/重置倍率（管理员）</a>
+  <a href="#u15">/开启倍率（管理员）</a>
+  <a href="#u16">Reload（控制台/RCON）</a>
+  <a href="#u17">常见问题</a>
+  <a href="#u18">技术支持</a>
+</nav>
+
+<main class="content">
+
+<section class="unit" id="u1" data-cat="basic">
+  <div class="group">第一章 · 软件总览</div>
+  <h2>软件总览</h2>
+  <p class="lead">倍率调整器（RatesScheduler）是方舟生存进化服务端插件：按你排好的时间表，到点自动开启全服倍率活动、到点自动还原倍率，全程自动通知玩家。所有行为都由一个 JSON 配置文件控制。</p>
+  <div class="card-grid">
+    <div class="unit card" data-cat="schedule"><div class="icon">⏰</div><h4>定时倍率调度</h4><p>到点自动开活动、到点自动收，全程无需人工值守。</p></div>
+    <div class="unit card" data-cat="schedule"><div class="icon">📅</div><h4>按星期排程</h4><p>周一至周日各配各的时间与倍率，另有 "*" 通配兜底。</p></div>
+    <div class="unit card" data-cat="schedule"><div class="icon">🎯</div><h4>16 项倍率乘算</h4><p>经验、驯服、采集、孵化、留痕等 16 项倍率精确控制。</p></div>
+    <div class="unit card" data-cat="notify"><div class="icon">📢</div><h4>全服通知与预告</h4><p>屏幕大字 + 聊天彩色广播，可提前预告、结束前提醒。</p></div>
+    <div class="unit card" data-cat="notify"><div class="icon">🖼️</div><h4>MOTD 自动切换</h4><p>活动期自动换活动 MOTD，结束后换回常规 MOTD。</p></div>
+    <div class="unit card" data-cat="cmd"><div class="icon">💬</div><h4>玩家自助查询</h4><p>玩家输入 /今日倍率 即可查看今日活动时间与倍率明细。</p></div>
+    <div class="unit card" data-cat="cmd"><div class="icon">🎛️</div><h4>服主手动接管</h4><p>/开启倍率、/重置倍率 随时手动开收，不受时间表限制。</p></div>
+    <div class="unit card" data-cat="basic"><div class="icon">🔄</div><h4>配置热重载</h4><p>改完配置输入一条 Reload 命令即时生效，无需重启服务器。</p></div>
+  </div>
+</section>
+
+<section class="unit" id="u2" data-cat="deploy">
+  <div class="group">第二章 · 环境要求</div>
+  <h2>环境要求</h2>
+  <table class="data-table">
+    <tr><th style="width:160px">项目</th><th>要求</th></tr>
+    <tr><td>操作系统</td><td>Windows（方舟生存进化服务端为 Windows x64）</td></tr>
+    <tr><td>服务端框架</td><td>Ark Server API（ArkApi），最低版本 3.5</td></tr>
+    <tr><td>运行库</td><td>VC++ 2015-2019 运行库 x64（含 MSVCP140 / VCRUNTIME140，即 Visual C++ Redistributable）；Windows 10 及以上系统自带 UCRT</td></tr>
+    <tr><td>数据存储</td><td>无数据库依赖，全部配置保存在一个 JSON 文件中</td></tr>
+    <tr><td>其他</td><td>无（不联网验证、不读写数据库）</td></tr>
+  </table>
+</section>
+
+<section class="unit" id="u3" data-cat="deploy">
+  <div class="group">第三章 · 部署安装</div>
+  <h2>部署安装</h2>
+  <ol class="steps">
+    <li><span class="step-title">确认前置</span><p>确认服务器已安装 Ark Server API 3.5 或更高版本（即服务器目录 <code>ShooterGame\Binaries\Win64\ArkApi</code> 已存在且正常运行）→ 没有安装请先安装 Ark Server API。</p></li>
+    <li><span class="step-title">创建插件目录</span><p>进入 <code>ShooterGame\Binaries\Win64\ArkApi\Plugins</code> 目录 → 新建文件夹并命名为 <code>RatesScheduler</code>。</p></li>
+    <li><span class="step-title">复制插件文件</span><p>把 <code>RatesScheduler.dll</code>、<code>PluginInfo.json</code>、<code>config.json</code> 三个文件复制进刚建好的 <code>RatesScheduler</code> 文件夹。</p></li>
+    <li><span class="step-title">重启服务器</span><p>重启方舟服务器 → 服务器完全启动后插件自动加载。</p></li>
+    <li><span class="step-title">验证安装</span><p>查看服务器控制台 → 出现「先锋.倍率调整器(1.0)」启动横幅，随后出现一行「倍率排程: 周1 18:00~24:00, 检查间隔 60 秒」样式的摘要日志 → 安装成功。</p></li>
+    <li><span class="step-title">（可选）放入配置编辑器</span><p>把 <code>编辑器.exe</code> 也复制进插件文件夹 → 以后双击它即可在网页里可视化修改配置，详见第四章「配置文件说明」。</p></li>
+  </ol>
+  <div class="note">升级版本：用新的 <code>RatesScheduler.dll</code> 覆盖旧文件后重启服务器即可。正常关服时，若倍率活动正在进行，插件会自动还原倍率与 MOTD，不会残留活动倍率。</div>
+</section>
+
+<section class="unit" id="u4" data-cat="basic">
+  <div class="group">第四章 · 配置详解</div>
+  <h2>配置文件说明</h2>
+  <p class="lead">全部功能通过一个 JSON 配置文件控制，位置固定在插件目录内：</p>
+  <pre><code>ShooterGame\Binaries\Win64\ArkApi\Plugins\RatesScheduler\
+├─ RatesScheduler.dll    ← 插件本体
+├─ PluginInfo.json       ← 插件信息（勿改）
+└─ config.json           ← 全部配置都在这里</code></pre>
+  <div class="note">JSON 里逗号、引号一个都不能少。建议优先使用自带的网页配置编辑器（把 <code>编辑器.exe</code> 放进插件目录后双击运行，自动打开浏览器编辑页面，保存即写回 config.json）；手动修改的话推荐用带 JSON 校验的编辑器（如 VS Code），改前先备份。改坏的后果与补救见第六章常见问题。</div>
+  <div class="shot">📷 此处应放截图：编辑器.exe 运行后的网页编辑界面</div>
+</section>
+
+<section class="unit" id="u5" data-cat="basic">
+  <div class="group">第四章 · 配置详解</div>
+  <h2>配置总表</h2>
+  <p class="lead">本表列出全部配置键与兜底值（不配置时代码里的默认行为），可配合页面搜索定位；详细讲法见后续各节。</p>
+  <table class="data-table">
+    <tr><th style="width:230px">配置键</th><th style="width:150px">兜底值</th><th>说明</th></tr>
+    <tr><td><code>ConsoleEncoding</code></td><td><code>"auto"</code></td><td>控制台中文输出编码：auto / gbk / utf8</td></tr>
+    <tr><td><code>排程.1</code> ~ <code>排程.7</code></td><td>无条目</td><td>周一（1）至周日（7）的专属排程键</td></tr>
+    <tr><td><code>排程.*</code></td><td>无条目</td><td>通用兜底排程：当天没有专属键时使用</td></tr>
+    <tr><td><code>排程.键.启用</code></td><td><code>false</code></td><td>该排程条目是否启用</td></tr>
+    <tr><td><code>排程.键.开启时间</code></td><td><code>"00:00"</code></td><td>活动开始时间 HH:MM（24 小时制）</td></tr>
+    <tr><td><code>排程.键.结束时间</code></td><td><code>"00:00"</code></td><td>活动结束时间 HH:MM，最大 <code>"24:00"</code></td></tr>
+    <tr><td><code>排程.键.倍率.全局经验倍率</code></td><td><code>0</code></td><td>经验获取倍率，0 = 不修改该项</td></tr>
+    <tr><td><code>排程.键.倍率.驯服速度倍率</code></td><td><code>0</code></td><td>驯服进度速度倍率</td></tr>
+    <tr><td><code>排程.键.倍率.采集数量倍率</code></td><td><code>0</code></td><td>采集获得数量倍率</td></tr>
+    <tr><td><code>排程.键.倍率.资源血量倍率</code></td><td><code>0</code></td><td>资源点血量倍率（越高采得越多）</td></tr>
+    <tr><td><code>排程.键.倍率.制作经验倍率</code></td><td><code>0</code></td><td>制作获得经验倍率</td></tr>
+    <tr><td><code>排程.键.倍率.钓鱼品质倍率</code></td><td><code>0</code></td><td>钓鱼奖励品质倍率</td></tr>
+    <tr><td><code>排程.键.倍率.光柱品质倍率</code></td><td><code>0</code></td><td>补给箱/光柱品质倍率</td></tr>
+    <tr><td><code>排程.键.倍率.幼崽成长倍率</code></td><td><code>0</code></td><td>幼崽成熟速度倍率</td></tr>
+    <tr><td><code>排程.键.倍率.孵蛋速度倍率</code></td><td><code>0</code></td><td>孵化速度倍率</td></tr>
+    <tr><td><code>排程.键.倍率.留痕间隔倍率</code></td><td><code>0</code></td><td>留痕需求间隔倍率（越小要照顾得越勤）</td></tr>
+    <tr><td><code>排程.键.倍率.留痕加成倍率</code></td><td><code>0</code></td><td>留痕属性加成倍率</td></tr>
+    <tr><td><code>排程.键.倍率.交配间隔倍率</code></td><td><code>0</code></td><td>交配冷却间隔倍率（越小越频繁）</td></tr>
+    <tr><td><code>排程.键.倍率.交配速度倍率</code></td><td><code>0</code></td><td>交配过程速度倍率</td></tr>
+    <tr><td><code>排程.键.倍率.产蛋间隔倍率</code></td><td><code>0</code></td><td>产蛋间隔倍率（越小越频繁）</td></tr>
+    <tr><td><code>排程.键.倍率.伴侣加成倍率</code></td><td><code>0</code></td><td>伴侣加成效果倍率</td></tr>
+    <tr><td><code>排程.键.倍率.资源刷新倍率</code></td><td><code>0</code></td><td>资源重生周期倍率（越小刷新越快）</td></tr>
+    <tr><td><code>通知.服务器名称</code></td><td><code>"RatesScheduler"</code></td><td>聊天广播显示的发送者名称</td></tr>
+    <tr><td><code>通知.屏幕通知</code></td><td><code>true</code></td><td>开关屏幕中央大字通知</td></tr>
+    <tr><td><code>通知.聊天广播</code></td><td><code>true</code></td><td>开关聊天栏彩色广播</td></tr>
+    <tr><td><code>通知.开启颜色</code></td><td><code>[0,1,0,1]</code></td><td>开启类通知颜色，RGBA 各 0~1</td></tr>
+    <tr><td><code>通知.关闭颜色</code></td><td><code>[1,0,0,1]</code></td><td>关闭类通知颜色，RGBA 各 0~1</td></tr>
+    <tr><td><code>通知.开启通知内容</code></td><td><code>"倍率增幅活动已开启！"</code></td><td>活动开启时的通知文案</td></tr>
+    <tr><td><code>通知.关闭通知内容</code></td><td><code>"倍率增幅活动已结束，倍率已恢复"</code></td><td>活动结束时的通知文案</td></tr>
+    <tr><td><code>通知.开启前预告分钟</code></td><td><code>0</code></td><td>提前多少分钟预告，0 = 关闭，范围 0~1440</td></tr>
+    <tr><td><code>通知.开启预告内容</code></td><td><code>""</code></td><td>预告文案，支持 {分钟} 占位</td></tr>
+    <tr><td><code>通知.结束前提醒分钟</code></td><td><code>0</code></td><td>结束前多少分钟提醒，0 = 关闭，范围 0~1440</td></tr>
+    <tr><td><code>通知.结束提醒内容</code></td><td><code>""</code></td><td>提醒文案，支持 {分钟} 占位</td></tr>
+    <tr><td><code>通知.MOTD自动切换</code></td><td><code>false</code></td><td>活动期自动切换服务器 MOTD</td></tr>
+    <tr><td><code>通知.活动MOTD</code></td><td><code>""</code></td><td>活动期间显示的 MOTD 文本</td></tr>
+    <tr><td><code>通知.常规MOTD</code></td><td><code>""</code></td><td>活动结束后换回的 MOTD 文本</td></tr>
+    <tr><td><code>命令.玩家命令.今日倍率</code></td><td><code>"/今日倍率"</code></td><td>玩家查询命令的触发文本</td></tr>
+    <tr><td><code>命令.服主命令.重置倍率</code></td><td><code>"/重置倍率"</code></td><td>还原倍率命令的触发文本</td></tr>
+    <tr><td><code>命令.服主命令.开启倍率</code></td><td><code>"/开启倍率"</code></td><td>手动开启命令的触发文本</td></tr>
+    <tr><td><code>通用.检查间隔秒</code></td><td><code>60</code></td><td>调度检查间隔秒数，范围 1~86400</td></tr>
+  </table>
+</section>
+
+<section class="unit" id="u6" data-cat="schedule">
+  <div class="group">第四章 · 配置详解</div>
+  <h2>排程结构与匹配规则</h2>
+  <p><b>什么意思：</b><code>排程</code> 是配置的核心，决定"哪天的什么时间段开什么倍率"。它是一个对象，键为 <code>"1"</code>~<code>"7"</code>（星期几的专属排程，1=周一、7=周日）和 <code>"*"</code>（通用兜底）。</p>
+  <p><b>匹配规则（重要）：</b>每天按当天星期取对应的键（周一取 <code>"1"</code>……周日取 <code>"7"</code>）：<b>只要当天键存在就一定用它，即使它是停用或时间非法的，也不会回落到 "*"</b>；当天键不存在时才使用 <code>"*"</code> 的通用排程；两者都没有则当天无活动。</p>
+  <pre><code>"排程": {
+  "1":  { "启用": true, "开启时间": "18:00", "结束时间": "24:00", "倍率": { ... } },
+  "5":  { "启用": true, "开启时间": "20:00", "结束时间": "23:00", "倍率": { ... } },
+  "*":  { "启用": false, "开启时间": "00:00", "结束时间": "00:00", "倍率": { ... } }
+}</code></pre>
+  <p><b>怎么修改：</b>想给某天单独安排活动，就在 <code>排程</code> 里加该天的键；想给没单独安排的日子统一兜底，就配置 <code>"*"</code>。上面例子表示：周一 18:00~24:00 一场、周五 20:00~23:00 一场，其余天不安排（"*" 停用）。</p>
+  <div class="note">所有时间均按<b>北京时间（UTC+8）</b>计算，与服务器系统的时区设置无关。每天 0 点跨天时自动重置当日状态，前一天没结束的活动会自动收尾。</div>
+</section>
+
+<section class="unit" id="u7" data-cat="schedule">
+  <div class="group">第四章 · 配置详解</div>
+  <h2>排程条目：启用与时间</h2>
+  <p><b>什么意思：</b>每个排程键下是一个条目对象，<code>启用</code> 控制这条排程是否生效，<code>开启时间</code>/<code>结束时间</code> 定义活动时间窗。</p>
+  <p><b>兜底值：</b><span class="badge">启用 false</span> <span class="badge">开启时间 "00:00"</span> <span class="badge">结束时间 "00:00"</span>（条目里没写的键按兜底值处理）</p>
+  <pre><code>"1": {
+  "启用": true,
+  "开启时间": "18:00",
+  "结束时间": "24:00",
+  "倍率": { ... }
+}</code></pre>
+  <p><b>怎么修改：</b><code>启用</code> 只能写 <code>true</code>/<code>false</code>；时间格式必须是 <code>HH:MM</code>（24 小时制），且必须<b>开启时间 &lt; 结束时间</b>、<b>不允许跨零点</b>（不能 23:00 开、01:00 收），结束时间最大可以写 <code>"24:00"</code>（表示当天 24 点即零点收）。时间写非法的条目不会生效，服务器控制台会输出警告日志提示是哪个条目。</p>
+  <div class="note">想临时停掉某一天的活动：把那天的 <code>启用</code> 改为 <code>false</code> 后 Reload 即可——因为当天键仍然存在，不会回落到 "*" 的兜底排程。</div>
+</section>
+
+<section class="unit" id="u8" data-cat="schedule">
+  <div class="group">第四章 · 配置详解</div>
+  <h2>倍率项配置（16 项）</h2>
+  <p><b>什么意思：</b>条目里的 <code>倍率</code> 对象控制活动期间修改哪些游戏倍率，共 16 项可选。<b>倍率是"乘算"语义：实际倍率 = 服务器平时值 × 配置值</b>——你服务器原本配置的数值不受破坏，活动结束自动恢复平时值。</p>
+  <p><b>兜底值：</b>每项兜底都是 <code>0</code>，表示<b>不修改该项</b>（活动期间保持服务器平时值）；填负数按 0 处理并记警告日志。</p>
+  <pre><code>"倍率": {
+  "全局经验倍率": 2.0,
+  "驯服速度倍率": 2.0,
+  "采集数量倍率": 2.0,
+  "留痕间隔倍率": 0.5,
+  "资源刷新倍率": 1.0
+}</code></pre>
+  <p><b>怎么修改：</b>上面例子表示活动期间经验/驯服/采集变为平时的 2 倍，留痕间隔缩短为平时的一半（要照顾幼崽更勤），资源刷新与平时相同。各项含义：</p>
+  <table class="data-table">
+    <tr><th style="width:170px">倍率键</th><th>作用说明</th></tr>
+    <tr><td><code>全局经验倍率</code></td><td>经验获取速度</td></tr>
+    <tr><td><code>驯服速度倍率</code></td><td>驯服进度增长速度</td></tr>
+    <tr><td><code>采集数量倍率</code></td><td>砍树、采石等获得的数量</td></tr>
+    <tr><td><code>资源血量倍率</code></td><td>资源点的血量，越高单次采集产出越多</td></tr>
+    <tr><td><code>制作经验倍率</code></td><td>制作物品获得的经验</td></tr>
+    <tr><td><code>钓鱼品质倍率</code></td><td>钓鱼获得的奖励品质</td></tr>
+    <tr><td><code>光柱品质倍率</code></td><td>补给箱/光柱的掉落品质</td></tr>
+    <tr><td><code>幼崽成长倍率</code></td><td>幼崽成熟速度</td></tr>
+    <tr><td><code>孵蛋速度倍率</code></td><td>蛋的孵化速度</td></tr>
+    <tr><td><code>留痕间隔倍率</code></td><td>幼崽留痕需求的间隔，值越小需要照顾得越频繁</td></tr>
+    <tr><td><code>留痕加成倍率</code></td><td>留痕完成获得的属性加成</td></tr>
+    <tr><td><code>交配间隔倍率</code></td><td>恐龙交配冷却间隔，值越小交配越频繁</td></tr>
+    <tr><td><code>交配速度倍率</code></td><td>交配过程的速度</td></tr>
+    <tr><td><code>产蛋间隔倍率</code></td><td>母龙产蛋间隔，值越小产蛋越频繁</td></tr>
+    <tr><td><code>伴侣加成倍率</code></td><td>伴侣关系带来的加成效果</td></tr>
+    <tr><td><code>资源刷新倍率</code></td><td>资源重生周期，值越小刷新越快</td></tr>
+  </table>
+  <div class="warning">倍率数值是乘数不是最终值：填 <code>2</code> 是在服务器平时值基础上翻倍；填 <code>1</code> 等于不变化；填 <code>0</code> 是完全不修改该项。活动结束会精确恢复到活动前的数值，不会破坏你 ini 里的原始配置。</div>
+</section>
+
+<section class="unit" id="u9" data-cat="notify">
+  <div class="group">第四章 · 配置详解</div>
+  <h2>通知段配置</h2>
+  <p><b>什么意思：</b><code>通知</code> 段控制活动开启/结束时的全服通知方式、文案、颜色，以及活动预告、结束提醒和 MOTD 自动切换。</p>
+  <p><b>兜底值：</b>下表"兜底值"列为不配置时的代码默认值。</p>
+  <pre><code>"通知": {
+  "服务器名称": "我的方舟服",
+  "屏幕通知": true,
+  "聊天广播": true,
+  "开启颜色": [0, 1, 0, 1],
+  "关闭颜色": [1, 0, 0, 1],
+  "开启通知内容": "倍率增幅活动已开启！",
+  "关闭通知内容": "倍率增幅活动已结束，倍率已恢复",
+  "开启前预告分钟": 30,
+  "开启预告内容": "倍率增幅活动将于 {分钟} 分钟后开启！",
+  "结束前提醒分钟": 30,
+  "结束提醒内容": "倍率增幅活动还剩 {分钟} 分钟，抓紧时间！",
+  "MOTD自动切换": true,
+  "活动MOTD": "当前处于倍率增幅活动期间！",
+  "常规MOTD": "欢迎回来！"
+}</code></pre>
+  <table class="data-table">
+    <tr><th style="width:180px">配置键</th><th style="width:230px">兜底值</th><th>说明</th></tr>
+    <tr><td><code>服务器名称</code></td><td><code>"RatesScheduler"</code></td><td>聊天广播里显示的发送者名称，建议改成你的服务器名</td></tr>
+    <tr><td><code>屏幕通知</code></td><td><code>true</code></td><td>true 时活动通知以屏幕中央大字显示（约 8 秒）</td></tr>
+    <tr><td><code>聊天广播</code></td><td><code>true</code></td><td>true 时活动通知同时发到聊天栏（彩色文本）</td></tr>
+    <tr><td><code>开启颜色</code></td><td><code>[0,1,0,1]</code></td><td>开启类通知颜色（含预告），格式 [红,绿,蓝,透明度]，各 0~1</td></tr>
+    <tr><td><code>关闭颜色</code></td><td><code>[1,0,0,1]</code></td><td>关闭类通知颜色（含结束提醒），格式同上</td></tr>
+    <tr><td><code>开启通知内容</code></td><td><code>"倍率增幅活动已开启！"</code></td><td>活动开启瞬间的通知文案，留空则不发这条</td></tr>
+    <tr><td><code>关闭通知内容</code></td><td><code>"倍率增幅活动已结束，倍率已恢复"</code></td><td>活动结束瞬间的通知文案，留空则不发这条</td></tr>
+    <tr><td><code>开启前预告分钟</code></td><td><code>0</code></td><td>活动开始前多少分钟发预告，0 = 关闭，有效范围 0~1440，每天最多预告一次</td></tr>
+    <tr><td><code>开启预告内容</code></td><td><code>""</code></td><td>预告文案，<code>{分钟}</code> 会替换为距开始的分钟数；留空则预告不发</td></tr>
+    <tr><td><code>结束前提醒分钟</code></td><td><code>0</code></td><td>活动结束前多少分钟发提醒，0 = 关闭，有效范围 0~1440，每天最多提醒一次</td></tr>
+    <tr><td><code>结束提醒内容</code></td><td><code>""</code></td><td>提醒文案，<code>{分钟}</code> 会替换为距结束的分钟数；留空则提醒不发</td></tr>
+    <tr><td><code>MOTD自动切换</code></td><td><code>false</code></td><td>true 时活动开启自动换上"活动MOTD"，结束换回"常规MOTD"</td></tr>
+    <tr><td><code>活动MOTD</code></td><td><code>""</code></td><td>活动期间的服务器 MOTD 文本，留空则不切换</td></tr>
+    <tr><td><code>常规MOTD</code></td><td><code>""</code></td><td>活动结束后换回的 MOTD 文本，留空则不切换</td></tr>
+  </table>
+  <div class="warning">开启 MOTD 自动切换后，活动期间服务器原有 MOTD 会被替换为"活动MOTD"，结束后换为"常规MOTD"——如果你服务器本来就有自定义 MOTD，请把"常规MOTD"填成原文，避免活动结束后 MOTD 变空。</div>
+</section>
+
+<section class="unit" id="u10" data-cat="cmd">
+  <div class="group">第四章 · 配置详解</div>
+  <h2>命令段配置（命令改名）</h2>
+  <p><b>什么意思：</b><code>命令</code> 段可以自定义三个聊天命令的触发文本（改名）。改完执行 <code>RatesScheduler.Reload</code> 后，旧命令文本自动注销、新命令文本立即生效。</p>
+  <p><b>兜底值：</b>不配置时使用下表默认文本。</p>
+  <pre><code>"命令": {
+  "玩家命令": {
+    "今日倍率": "/今日倍率"
+  },
+  "服主命令": {
+    "重置倍率": "/重置倍率",
+    "开启倍率": "/开启倍率"
+  }
+}</code></pre>
+  <table class="data-table">
+    <tr><th style="width:230px">配置键</th><th style="width:170px">兜底值</th><th>说明</th></tr>
+    <tr><td><code>命令.玩家命令.今日倍率</code></td><td><code>"/今日倍率"</code></td><td>玩家查询命令的触发文本，所有玩家可用</td></tr>
+    <tr><td><code>命令.服主命令.重置倍率</code></td><td><code>"/重置倍率"</code></td><td>还原倍率命令的触发文本，仅管理员可用</td></tr>
+    <tr><td><code>命令.服主命令.开启倍率</code></td><td><code>"/开启倍率"</code></td><td>手动开启命令的触发文本，仅管理员可用</td></tr>
+  </table>
+  <p><b>怎么修改：</b>把值改成你想要的文本即可（一般以 <code>/</code> 开头避免与聊天内容冲突），例如 <code>"今日倍率": "/chaxun"</code>，Reload 后玩家就改输 <code>/chaxun</code> 查询。</p>
+</section>
+
+<section class="unit" id="u11" data-cat="basic">
+  <div class="group">第四章 · 配置详解</div>
+  <h2>通用段与控制台编码</h2>
+  <h3>通用.检查间隔秒</h3>
+  <p><b>什么意思：</b>插件每隔多少秒检查一次"该不该开/收活动"。到点精度取决于这个间隔——间隔 60 秒时，活动开启最多有 60 秒内的误差。</p>
+  <p><b>兜底值：</b><span class="badge">60</span>（不配置或超出范围 1~86400 时按 60 处理）</p>
+  <pre><code>"通用": {
+  "检查间隔秒": 60
+}</code></pre>
+  <p><b>怎么修改：</b>想活动开启更准时就调小（如 <code>30</code>、<code>10</code>）；检查本身开销极小，按默认 60 用也完全没问题。</p>
+  <h3>ConsoleEncoding</h3>
+  <p><b>什么意思：</b>插件往服务器控制台输出中文日志时的编码。不同版本 ArkApi 的控制台编码不同（3.54 为 GBK、3.55 为 UTF-8），设错会看到中文乱码。</p>
+  <p><b>兜底值：</b><span class="badge">"auto"</span>（自动探测，推荐保持）</p>
+  <pre><code>"ConsoleEncoding": "auto"</code></pre>
+  <p><b>怎么修改：</b>可选 <code>"auto"</code>（按控制台自动探测）、<code>"gbk"</code>/<code>"ansi"</code>（强制 GBK）、<code>"utf8"</code>/<code>"utf-8"</code>（强制 UTF-8）；写别的值视为非法，自动回落 <code>auto</code> 并在控制台输出提示。改完 Reload 即生效。</p>
+  <div class="note">本章所有配置的生效方式：改完 <code>config.json</code> 后，在服务器控制台或 RCON 执行 <code>RatesScheduler.Reload</code> 即时生效，无需重启服务器；直接重启服务器当然也会加载新配置。热重载时若活动正在进行且时间窗仍有效，新倍率立即套用，不会重复发开启通知。</div>
+</section>
+
+<section class="unit" id="u12" data-cat="cmd">
+  <div class="group">第五章 · 命令用法详解</div>
+  <h2>命令总表与改名</h2>
+  <p class="lead">聊天命令在游戏内聊天框输入；控制台/RCON 命令在服务器控制台或 RCON 工具输入。三个聊天命令的触发文本都可以在"命令"段改名。</p>
+  <table class="data-table">
+    <tr><th>命令</th><th style="width:90px">权限</th><th>作用</th><th style="width:230px">改名配置键</th></tr>
+    <tr><td><code>/今日倍率</code></td><td>玩家</td><td>查询今日倍率活动的时间与各项倍率</td><td><code>命令.玩家命令.今日倍率</code></td></tr>
+    <tr><td><code>/重置倍率</code></td><td>管理员</td><td>立即还原官方倍率，暂停自动调度</td><td><code>命令.服主命令.重置倍率</code></td></tr>
+    <tr><td><code>/开启倍率</code></td><td>管理员</td><td>立即套用今日配置的倍率</td><td><code>命令.服主命令.开启倍率</code></td></tr>
+    <tr><td><code>RatesScheduler.Reload</code></td><td>控制台·RCON</td><td>热重载配置文件</td><td>不可改名</td></tr>
+  </table>
+  <div class="note">符号约定：命令格式里的 <code>[方括号]</code> 表示可选参数，只是标注——<b>实际输入时不要输入方括号</b>。例如格式是 <code>/命令 [层号]</code>，实际输入是 <code>/命令 3</code>。下方所有示例都是可直接照抄的真实输入。本插件的四个命令均无参数。</div>
+  <div class="note">「管理员」指已用 <code>enablecheats 管理密码</code> 登录管理员身份的玩家；普通玩家输入管理员命令没有任何效果，也不会收到提示。</div>
+</section>
+
+<section class="unit" id="u13" data-cat="cmd">
+  <div class="group">第五章 · 命令用法详解</div>
+  <h2>/今日倍率（玩家命令）</h2>
+  <p><b>作用：</b>查询今天的倍率活动——什么时间开、有哪些倍率加成。所有玩家可用，无需任何权限。</p>
+  <pre><code>/今日倍率</code></pre>
+  <table class="data-table">
+    <tr><th>参数</th><th style="width:60px">必填</th><th style="width:110px">缺省值</th><th>说明</th></tr>
+    <tr><td>无参数</td><td>—</td><td>—</td><td>本命令不带任何参数</td></tr>
+  </table>
+  <p>示例：<code>/今日倍率</code>（裸命令：立刻收到今日活动的回复）　<code>/chaxun</code>（服主把命令改名为 /chaxun 后的输入，效果完全相同）</p>
+  <p><b>反馈：</b>今天有活动时，收到「今日倍率活动 18:00~24:00」并逐行列出加成项，如「全局经验倍率 ×2」「留痕间隔倍率 ×0.5」（与平时相同的项不列出；没有任何加成项时显示「暂无倍率加成项」）。今天没有活动时回复「今日无倍率活动」。回复以聊天消息形式发送，发送者名称为配置里的「服务器名称」。</p>
+</section>
+
+<section class="unit" id="u14" data-cat="cmd">
+  <div class="group">第五章 · 命令用法详解</div>
+  <h2>/重置倍率（管理员命令）</h2>
+  <p><b>作用：</b>立即把全部 16 项倍率还原为服务器官方值，并暂停自动调度，直到下一个时间窗边界自动恢复。用于调试配置或临时取消活动。</p>
+  <pre><code>/重置倍率</code></pre>
+  <table class="data-table">
+    <tr><th>参数</th><th style="width:60px">必填</th><th style="width:110px">缺省值</th><th>说明</th></tr>
+    <tr><td>无参数</td><td>—</td><td>—</td><td>本命令不带任何参数</td></tr>
+  </table>
+  <p>示例：<code>/重置倍率</code>（裸命令：倍率立即还原、调度暂停）　<code>/guanbi</code>（服主把命令改名为 /guanbi 后的输入，效果完全相同）</p>
+  <p><b>反馈：</b>成功时收到绿色提示「已还原官方倍率, 自动调度暂停至下一时间窗边界」；游戏模式尚未就绪（如服务器刚启动）时收到红色提示「游戏模式未就绪, 稍后再试」；非管理员使用则无任何反应。</p>
+</section>
+
+<section class="unit" id="u15" data-cat="cmd">
+  <div class="group">第五章 · 命令用法详解</div>
+  <h2>/开启倍率（管理员命令）</h2>
+  <p><b>作用：</b>不等时间表，立即套用今日排程里配置的倍率，并暂停自动调度至下一时间窗边界。用于临时加开一场活动。</p>
+  <pre><code>/开启倍率</code></pre>
+  <table class="data-table">
+    <tr><th>参数</th><th style="width:60px">必填</th><th style="width:110px">缺省值</th><th>说明</th></tr>
+    <tr><td>无参数</td><td>—</td><td>—</td><td>本命令不带任何参数</td></tr>
+  </table>
+  <p>示例：<code>/开启倍率</code>（裸命令：立即套用今日配置的倍率）　<code>/jiabei</code>（服主把命令改名为 /jiabei 后的输入，效果完全相同）</p>
+  <p><b>反馈：</b>成功且今日有时间窗时收到绿色提示「已套用今日配置倍率, 自动调度暂停至下一时间窗边界」；今日条目缺失或倍率全为 0 时收到红色提示「今日无可用倍率配置 (条目缺失或倍率全为 0)」；今日条目没有生效时间窗（停用或时间非法）时仍可套用，收到绿色提示「已套用该条目倍率 (今日无生效时间窗, 零点自动还原, 或用 /重置倍率)」（若改过重置倍率的命令文本，提示里显示的是新命令名）；游戏模式未就绪时收到红色提示「游戏模式未就绪, 稍后再试」。</p>
+  <div class="note">配合关系：手动开启后，到达今日时间窗边界时自动调度恢复并补发开启通知；在窗口外手动开启且当天没有时间窗的，次日 0 点自动还原。随时可用 /重置倍率 收掉。</div>
+</section>
+
+<section class="unit" id="u16" data-cat="cmd">
+  <div class="group">第五章 · 命令用法详解</div>
+  <h2>RatesScheduler.Reload（控制台/RCON 命令）</h2>
+  <p><b>作用：</b>重新读取 <code>config.json</code> 并按新配置立即重判调度状态。改完配置不用重启服务器，输它就行。</p>
+  <pre><code>RatesScheduler.Reload</code></pre>
+  <table class="data-table">
+    <tr><th>参数</th><th style="width:60px">必填</th><th style="width:110px">缺省值</th><th>说明</th></tr>
+    <tr><td>无参数</td><td>—</td><td>—</td><td>本命令不带任何参数</td></tr>
+  </table>
+  <p>示例：<code>RatesScheduler.Reload</code>（在服务器控制台输入：配置立即重载）　<code>RatesScheduler.Reload</code>（在 RCON 工具输入：同样效果，RCON 会回显结果文本）</p>
+  <p><b>反馈：</b>成功时游戏内提示绿色「Reloaded config」，RCON 回显「Reloaded config」；配置文件语法错误时游戏内提示红色「Failed to reload config」，RCON 回显具体错误文本——此时插件继续按旧配置运行，修正 JSON 后再次执行即可。</p>
+</section>
+
+<section class="unit" id="u17" data-cat="faq">
+  <div class="group">第六章 · 常见问题</div>
+  <h2>常见问题</h2>
+  <details class="faq"><summary>改完配置怎么生效？必须重启服务器吗？</summary><div class="answer">不用重启。在服务器控制台或 RCON 执行 <code>RatesScheduler.Reload</code> 即时生效；改命令文本、倍率、时间窗都支持热重载。重启服务器当然也会加载新配置。</div></details>
+  <details class="faq"><summary>Reload 提示 Failed to reload config 怎么办？</summary><div class="answer">先试这个：说明 config.json 有 JSON 语法错误（最常见是多了/少了逗号、引号写成了中文引号）。用自带编辑器重新保存一次，或把文件粘到带 JSON 校验的编辑器里看报错行。重载失败不影响运行——插件会继续用上一次成功的配置。</div></details>
+  <details class="faq"><summary>排程配置了但活动没按时开？</summary><div class="answer">依次检查：① 条目里「启用」是否为 true；② 时间是否满足「开启时间 &lt; 结束时间」且不跨零点（结束最大 24:00）；③ 当天是否命中了专属键——周一~周日的键只要存在就一定用它（停用也不回落到 "*"），想用兜底排程就删掉当天的键；④「检查间隔秒」是否被改得过大。</div></details>
+  <details class="faq"><summary>倍率填 2 是变成"2 倍率"吗？</summary><div class="answer">不是。倍率是乘算：实际值 = 服务器平时值 × 配置值。填 2 是在平时基础上翻倍，填 1 等于不变，填 0 是完全不修改该项。活动结束自动恢复到活动前的精确数值。</div></details>
+  <details class="faq"><summary>服务器控制台中文日志乱码？</summary><div class="answer">把 <code>ConsoleEncoding</code> 按服务器控制台实际编码改成 <code>"gbk"</code> 或 <code>"utf8"</code> 后 Reload。多数情况保持 <code>"auto"</code> 自动探测即可。</div></details>
+  <details class="faq"><summary>改了命令文本，旧命令还能用吗？</summary><div class="answer">Reload 后插件会自动按旧文本注销、按新文本重新挂载命令，不会出现新旧命令并存或旧命令残留。</div></details>
+  <details class="faq"><summary>怎么临时停掉某一天的活动？</summary><div class="answer">把那天的排程键里「启用」改为 false 后 Reload。注意：当天键存在时不会回落到 "*"，所以这是"只停这一天"；想全停就把所有键（含 "*"）都停用。</div></details>
+  <details class="faq"><summary>卸载插件后活动倍率会残留吗？</summary><div class="answer">不会。插件卸载（含正常关服）时若活动正在进行，会自动还原 16 项倍率并换回常规 MOTD。若服务器异常崩溃，重启后服务器会按自己的 ini 配置初始化倍率，也不会残留。</div></details>
+</section>
+
+<section class="unit" id="u18" data-cat="faq">
+  <div class="group">第七章 · 技术支持</div>
+  <h2>技术支持</h2>
+  <div class="note">先锋方舟服主群：138535385　·　作者 QQ：711919。反馈问题时建议附上：插件目录里的 <code>config.json</code>、服务器控制台的相关日志输出（截图或复制文本）、问题发生的大致时间和你做过的操作。</div>
+</section>
+
+<div class="empty hide" id="emptyState">没有匹配的内容，换个关键词或分类试试</div>
+</main>
+</div>
+
+<footer class="foot">
+  倍率调整器 · 服主教程 · 2026-09
+</footer>
+
+<script>
+(function(){
+var inp=document.getElementById('searchInput');
+var chips=[].slice.call(document.querySelectorAll('.chip'));
+var units=[].slice.call(document.querySelectorAll('.unit'));
+var empty=document.getElementById('emptyState');
+var cnt=document.getElementById('resultCount');
+var cat='all';
+function go(){
+  var q=(inp.value||'').trim().toLowerCase(),n=0;
+  units.forEach(function(u){
+    var okC=(cat=='all'||u.getAttribute('data-cat')==cat);
+    var t=(u.textContent||'').toLowerCase()+(u.getAttribute('data-kw')||'');
+    var okQ=!q||t.indexOf(q)>-1;
+    var s=okC&&okQ;u.classList.toggle('hide',!s);if(s)n++;
+  });
+  [].forEach.call(document.querySelectorAll('.toc a'),function(a){
+    var el=document.getElementById(a.getAttribute('href').slice(1));
+    a.classList.toggle('dim',!(el&&!el.classList.contains('hide')));
+  });
+  empty.classList.toggle('hide',n>0);
+  cnt.textContent=n+' / '+units.length+' 条';
+}
+chips.forEach(function(c){c.addEventListener('click',function(){
+  chips.forEach(function(x){x.classList.remove('on')});c.classList.add('on');
+  cat=c.getAttribute('data-cat');go();
+})});
+inp.addEventListener('input',go);go();
+})();
+</script>
+
+</body>
+</html>
