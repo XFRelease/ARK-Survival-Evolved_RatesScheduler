@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>倍率调整器 软件简介</title>
+<style>
+/* ============================================================
+   样式区：禁止修改！
+   本模板是 xiangmujiaocheng 技能的「软件简介」专属模板（清爽文档蓝）。
+   修改此区会破坏所有项目软件简介的视觉统一。
+   ============================================================ */
+:root{--acc:#2563eb;--accbg:#eff6ff;--line:#e2e8f0;--line2:#cbd5e1;--text:#1e293b;--dim:#64748b;--bg2:#f8fafc;--ok:#16a34a;--warn:#d97706;--warnbg:#fffbeb;--warnline:#fde68a}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font:15.5px/1.85 "Microsoft YaHei","PingFang SC","Segoe UI",sans-serif;color:var(--text);background:#fff}
+a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
+code{background:var(--accbg);color:#1d4ed8;border-radius:4px;padding:1px 7px;font-family:Consolas,"Courier New",monospace;font-size:13.5px}
+pre{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:13px 16px;overflow:auto}
+pre code{background:none;color:#0f172a;padding:0}
+.hide{display:none!important}
+
+.hero{background:linear-gradient(180deg,#eef5ff 0%,#ffffff 100%);border-bottom:1px solid var(--line);padding:44px 20px 32px;text-align:center}
+.kind{display:inline-block;background:var(--acc);color:#fff;border-radius:4px;font-size:13px;padding:2px 12px;letter-spacing:2px}
+.hero h1{margin:14px 0 8px;font-size:34px}
+.hero h1 .accent{color:var(--acc)}
+.hero .sub{color:var(--dim);margin:0 auto;max-width:640px;font-size:15.5px}
+
+.toolbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 1px 3px rgba(15,23,42,.05)}
+.toolbar-in{max-width:980px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:10px 20px}
+#searchInput{flex:1 1 240px;border:1px solid var(--line2);border-radius:8px;padding:8px 14px;font-size:14.5px;outline:none;background:var(--bg2)}
+#searchInput:focus{border-color:var(--acc);background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1px solid var(--line2);background:#fff;color:var(--dim);border-radius:999px;padding:5px 15px;font-size:13.5px;cursor:pointer}
+.chip:hover{border-color:var(--acc);color:var(--acc)}
+.chip.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.count{color:var(--dim);font-size:13px;white-space:nowrap}
+
+.content{max-width:980px;margin:0 auto;padding:30px 20px 70px}
+
+.unit{margin:0 0 38px}
+.group{font-size:12.5px;color:var(--acc);letter-spacing:2px;margin-bottom:4px}
+.unit>h2{margin:0 0 10px;font-size:22px;border-left:4px solid var(--acc);padding-left:12px}
+.lead{color:var(--dim);margin:0 0 14px;font-size:14.5px}
+.unit h3{font-size:16.5px;margin:20px 0 8px}
+
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:13px;margin:16px 0}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:15px 17px;box-shadow:0 1px 2px rgba(15,23,42,.04);transition:.15s}
+.card:hover{border-color:var(--acc);box-shadow:0 4px 14px rgba(37,99,235,.12)}
+.card .icon{font-size:22px}
+.card h4{margin:7px 0 5px;font-size:15.5px;color:var(--acc)}
+.card p{margin:0;color:var(--dim);font-size:13.5px}
+
+.note,.warning{border-radius:8px;padding:12px 16px;margin:14px 0;font-size:14.5px}
+.note{background:var(--accbg);border:1px solid #bfdbfe}
+.warning{background:var(--warnbg);border:1px solid var(--warnline)}
+
+table.data-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14.5px}
+.data-table th{background:var(--accbg);color:#1d4ed8;text-align:left}
+.data-table th,.data-table td{border:1px solid var(--line);padding:8px 13px}
+.data-table tr:nth-child(even) td{background:#fbfdff}
+
+details.faq{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:10px 16px;margin:9px 0}
+details.faq summary{cursor:pointer;font-weight:600}
+details.faq[open]{border-color:var(--acc)}
+details.faq .answer{color:var(--dim);padding-top:7px}
+
+.shot{border:2px dashed var(--line2);border-radius:8px;padding:26px;text-align:center;color:var(--dim);font-size:14px;margin:13px 0}
+.badge{display:inline-block;border-radius:4px;padding:1px 10px;font-size:12.5px;margin-right:6px;color:var(--acc);border:1px solid var(--acc)}
+.badge.ok{color:var(--ok);border-color:var(--ok)}
+.badge.warn{color:var(--warn);border-color:var(--warn)}
+.empty{border:1px dashed var(--line2);border-radius:10px;padding:44px;text-align:center;color:var(--dim);margin:20px 0}
+
+.foot{border-top:1px solid var(--line);color:var(--dim);text-align:center;padding:20px;font-size:13px;background:var(--bg2)}
+@media (max-width:640px){.hero h1{font-size:26px}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <span class="kind">软件简介</span>
+  <h1>倍率调整器 <span class="accent">到点自动开倍率活动</span></h1>
+  <p class="sub">配置一次时间表，每天到点自动开、到点自动收，全服通知、MOTD 同步换——你睡觉，它营业。</p>
+</header>
+
+<div class="toolbar"><div class="toolbar-in">
+  <input id="searchInput" type="search" placeholder="搜索功能…">
+  <div class="chips">
+    <button class="chip on" data-cat="all">全部</button>
+    <button class="chip" data-cat="core">核心卖点</button>
+    <button class="chip" data-cat="adv">特色功能</button>
+    <button class="chip" data-cat="env">适配与购买</button>
+  </div>
+  <span class="count" id="resultCount"></span>
+</div></div>
+
+<main class="content">
+
+<section class="unit" id="s1" data-cat="core">
+  <div class="group">01 · 软件定位</div>
+  <h2>软件定位</h2>
+  <p>手动办一场倍率活动有多累？定闹钟、掐着点改服务器配置再重启、活动完了还得记得改回去——忘关一次，双倍经验挂一整周；不开活动，玩家又在群里天天问"今晚几点开"。活动越勤快，你被拴在服务器前的时间越长。</p>
+  <p>倍率调整器（RatesScheduler）是方舟生存进化的服务端插件，专为"自动经营倍率活动"而生：你把周一到周日每天的活动时间和倍率一次配好，它就每天到点自动开活动、到点自动收倍率，屏幕大字 + 聊天广播全服通知，连服务器 MOTD 都自动换好。玩家用一条命令自助查询，你只管收人气。配置一次，天天营业。</p>
+</section>
+
+<section class="unit" id="s2" data-cat="env">
+  <div class="group">02 · 适配环境</div>
+  <h2>适配环境</h2>
+  <table class="data-table">
+    <tr><th style="width:150px">项目</th><th>要求</th></tr>
+    <tr><td>操作系统</td><td>Windows（方舟生存进化服务端）</td></tr>
+    <tr><td>服务端框架</td><td>Ark Server API（ArkApi）3.5 及以上</td></tr>
+    <tr><td>运行库</td><td>VC++ 2015-2019 运行库 x64（Windows 10 及以上自带 UCRT）</td></tr>
+    <tr><td>数据存储</td><td>无数据库依赖，一个 JSON 配置文件搞定全部设置</td></tr>
+  </table>
+</section>
+
+<div class="card-grid">
+  <div class="unit card" data-cat="core"><div class="icon">⏰</div><h4>到点自动开收</h4><p>时间表配好就不用管：到点开活动、到点收倍率，你睡觉它营业。</p></div>
+  <div class="unit card" data-cat="core"><div class="icon">📅</div><h4>按星期排程</h4><p>周一到周日各配各的，再配个 "*" 通配兜底，一周节奏一次排完。</p></div>
+  <div class="unit card" data-cat="core"><div class="icon">🎯</div><h4>16 项倍率乘算</h4><p>经验、驯服、采集、孵化、留痕、交配……16 项精细控制，0 破坏原配置。</p></div>
+  <div class="unit card" data-cat="adv"><div class="icon">📢</div><h4>全服通知预告</h4><p>屏幕大字 + 彩色聊天广播，开前预告、收前提醒，玩家再不错过。</p></div>
+  <div class="unit card" data-cat="adv"><div class="icon">🖼️</div><h4>MOTD 自动切换</h4><p>活动期自动挂活动公告，结束自动换回常规欢迎语。</p></div>
+  <div class="unit card" data-cat="adv"><div class="icon">💬</div><h4>玩家自助查询</h4><p>一条 /今日倍率 命令查清时间与加成，群里没人再刷屏问活动。</p></div>
+  <div class="unit card" data-cat="adv"><div class="icon">🎛️</div><h4>服主手动接管</h4><p>想临时加一场、提前收一场？两条管理员命令随时接管。</p></div>
+  <div class="unit card" data-cat="adv"><div class="icon">🖥️</div><h4>网页配置编辑器</h4><p>双击一个 exe 就能在网页里改配置，热重载秒生效，不用重启服。</p></div>
+</div>
+
+<section class="unit" id="s3" data-cat="core">
+  <div class="group">03 · 重点功能</div>
+  <h2>定时倍率调度 <span class="badge ok">核心</span></h2>
+  <p><b>什么功能：</b>按时间表在指定时间窗自动修改服务器的游戏倍率，时间一到自动应用、时间一到自动还原。</p>
+  <p><b>什么作用：</b>晚间场、周末场、节假日专场全部自动运转，活动节奏稳定，玩家养成到点上线抢活动的习惯。</p>
+  <p><b>给你的好处：</b>没有它，你办活动要掐着表改 ini、重启服务器、半夜定闹钟收倍率——忘收一次就是一整周双倍。有了它，16 项倍率（经验、驯服、采集、孵化、留痕、交配、产蛋、资源刷新等）在平时值基础上乘算生效，活动结束精确恢复到你 ini 里的原始数值，服务器配置零破坏。你配置一次，它天天营业。</p>
+  <div class="shot">📷 此处应放截图：活动开启瞬间的全服屏幕通知与聊天广播</div>
+</section>
+
+<section class="unit" id="s4" data-cat="core">
+  <div class="group">03 · 重点功能</div>
+  <h2>按星期排程 + 通配兜底 <span class="badge ok">核心</span></h2>
+  <p><b>什么功能：</b>周一到周日每天一条专属排程，各配各的时间与倍率；再配一条 "*" 通配排程兜底所有没单独安排的日子。</p>
+  <p><b>什么作用：</b>工作日晚上 2 小时轻量场、周末全天豪华场、平日通配小福利——一张时间表管一周。</p>
+  <p><b>给你的好处：</b>不用每天手动开关：周末想开猛一点就给周六周日单独配，平时用 "*" 兜底小倍率维持人气。想临时停掉某一天，把那天"启用"改成 false 就行，互不影响其他天。所有时间按北京时间计算，与你服务器系统时区无关，跨服、海外服都不用换算。</p>
+</section>
+
+<section class="unit" id="s5" data-cat="adv">
+  <div class="group">03 · 重点功能</div>
+  <h2>全服通知 + 预告提醒 <span class="badge">人气担当</span></h2>
+  <p><b>什么功能：</b>活动开启/结束瞬间，屏幕中央大字 + 聊天栏彩色广播同时通知全服；可配置提前 N 分钟预告、结束前 N 分钟提醒，文案和颜色全部自定义。</p>
+  <p><b>什么作用：</b>玩家再也不会"活动开了不知道、快结束了才发现"——预告一出全服集合，提醒一出疯狂收尾，活动参与感直接拉满。</p>
+  <p><b>给你的好处：</b>以前你办活动得自己在群里喊话、在游戏里广播，半夜场还得定闹钟。现在通知完全自动：文案支持"{分钟}"占位自动替换倒计时，颜色用 RGBA 自定义，广播署名就是你的服务器名。一场活动的预热、开启、收尾提示，全自动安排得明明白白。</p>
+  <div class="shot">📷 此处应放截图：开启预告与结束提醒的聊天广播效果</div>
+</section>
+
+<section class="unit" id="s6" data-cat="adv">
+  <div class="group">03 · 重点功能</div>
+  <h2>MOTD 自动切换 <span class="badge">门面担当</span></h2>
+  <p><b>什么功能：</b>活动开启时自动把服务器 MOTD（进入服务器欢迎信息）换成活动公告，活动结束自动换回常规欢迎语。</p>
+  <p><b>什么作用：</b>每个新进服的玩家第一眼就知道"现在正在倍率活动"，进服即知情。</p>
+  <p><b>给你的好处：</b>不用再手动改 MOTD 提醒活动——活动公告和活动本身同生同灭，永远不会出现"MOTD 还挂着上周活动"的尴尬。</p>
+</section>
+
+<section class="unit" id="s7" data-cat="adv">
+  <div class="group">03 · 重点功能</div>
+  <h2>服主手动接管 <span class="badge">灵活掌控</span></h2>
+  <p><b>什么功能：</b>管理员聊天命令 /开启倍率、/重置倍率，随时无视时间表手动开一场或提前收掉。</p>
+  <p><b>什么作用：</b>直播福利、在线人数破百庆祝、临时活动说开就开。</p>
+  <p><b>给你的好处：</b>自动排程是主力，手动接管是底牌——想加场就 /开启倍率 立即套用今日配置，想收场就 /重置倍率 秒回官方倍率；到下一个时间窗边界，自动调度无缝接管。命令文本还能自定义改名，配合你的服务器风格。</p>
+</section>
+
+<section class="unit" id="s8" data-cat="adv">
+  <div class="group">03 · 重点功能</div>
+  <h2>网页配置编辑器 + 热重载 <span class="badge">省心运维</span></h2>
+  <p><b>什么功能：</b>自带单文件网页编辑器：放进插件目录双击运行，浏览器里可视化编辑配置，保存即写回；配合控制台/RCON 一条 Reload 命令，配置秒级生效。</p>
+  <p><b>什么作用：</b>改时间、改倍率、改文案全程不重启服务器，在线玩家无感知。</p>
+  <p><b>给你的好处：</b>改配置不用挑深夜停服窗口：活动进行中改倍率立即套用新值，改命令文本自动换绑，JSON 写错了也只回一句失败提示、插件继续按旧配置跑——安全热更新，怎么折腾都不掉线。</p>
+  <div class="shot">📷 此处应放截图：网页配置编辑器界面</div>
+</section>
+
+<section class="unit" id="s9" data-cat="core">
+  <div class="group">04 · 运行效果</div>
+  <h2>运行效果</h2>
+  <div class="shot">📷 此处应放截图：活动开启时屏幕中央大字通知 + 聊天彩色广播</div>
+  <div class="shot">📷 此处应放截图：玩家使用 /今日倍率 收到的活动明细回复</div>
+  <div class="shot">📷 此处应放截图：网页配置编辑器的排程编辑界面</div>
+</section>
+
+<section class="unit" id="s10" data-cat="env">
+  <div class="group">05 · 价格与购买</div>
+  <h2>价格与购买</h2>
+  <div class="note">咨询与购买请联系作者 QQ：711919，或加入先锋方舟服主群：138535385。价格与版本说明以发布信息为准。</div>
+</section>
+
+<div class="empty hide" id="emptyState">没有匹配的内容，换个关键词或分类试试</div>
+</main>
+
+<footer class="foot">
+  倍率调整器 · 软件简介 · 2026-09
+</footer>
+
+<script>
+(function(){
+var inp=document.getElementById('searchInput');
+var chips=[].slice.call(document.querySelectorAll('.chip'));
+var units=[].slice.call(document.querySelectorAll('.unit'));
+var empty=document.getElementById('emptyState');
+var cnt=document.getElementById('resultCount');
+var cat='all';
+function go(){
+  var q=(inp.value||'').trim().toLowerCase(),n=0;
+  units.forEach(function(u){
+    var okC=(cat=='all'||u.getAttribute('data-cat')==cat);
+    var t=(u.textContent||'').toLowerCase()+(u.getAttribute('data-kw')||'');
+    var okQ=!q||t.indexOf(q)>-1;
+    var s=okC&&okQ;u.classList.toggle('hide',!s);if(s)n++;
+  });
+  empty.classList.toggle('hide',n>0);
+  cnt.textContent=n+' / '+units.length+' 条';
+}
+chips.forEach(function(c){c.addEventListener('click',function(){
+  chips.forEach(function(x){x.classList.remove('on')});c.classList.add('on');
+  cat=c.getAttribute('data-cat');go();
+})});
+inp.addEventListener('input',go);go();
+})();
+</script>
+
+</body>
+</html>
